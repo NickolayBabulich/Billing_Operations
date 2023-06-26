@@ -10,16 +10,16 @@ def load_data(filename):
 
 def date_format(date_log):
     date_log = ' '.join(date_log.split('T'))
-    formated_date = datetime.strptime(str(date_log), '%Y-%m-%d %H:%M:%S.%f').strftime('%d.%m.%Y')
+    formated_date = datetime.strptime(date_log, '%Y-%m-%d %H:%M:%S.%f').strftime('%d.%m.%Y')
     return formated_date
 
 
-def if_executed(data):
-    last_operations = []
-    for i in data[-6:]:
+def if_executed(data, operations_amount):
+    executed_operations = []
+    for i in data:
         if i.get('state') == 'EXECUTED':
-            last_operations.append(i)
-    return last_operations
+            executed_operations.append(i)
+    return executed_operations[len(executed_operations) - operations_amount:]
 
 
 def sender_format(account):
