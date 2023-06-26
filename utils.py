@@ -1,34 +1,60 @@
 import json
-from datetime import date, datetime
+from datetime import datetime
 
 
 def load_data(filename):
+    """
+    функция получает данные из json
+    :param filename: имя json файла
+    :return: возвращаем массив данных
+    """
     with open(filename, 'r', encoding='UTF-8') as file:
         data = json.load(file)
     return data
 
 
 def date_format(date_log):
+    """
+    функция форматирует дату до вида согласно ТЗ
+    :param date_log: преобразуем строку для форматирования даты
+    :return: возвращаем сформатированную дату
+    """
     date_log = ' '.join(date_log.split('T'))
-    formated_date = datetime.strptime(date_log, '%Y-%m-%d %H:%M:%S.%f').strftime('%d.%m.%Y')
-    return formated_date
+    formatted_date = datetime.strptime(date_log, '%Y-%m-%d %H:%M:%S.%f').strftime('%d.%m.%Y')
+    return formatted_date
 
 
 def if_executed(data, operations_amount):
-    executed_operations = [i for i in data if i.get('state') == 'EXECUTED']
+    """
+    функция выводит лог успешных операций
+    :param data: данные операций
+    :param operations_amount: параметр задает необходимое количество операций для отображения
+    :return: возвращает список только успешных операций от самой последней в заданном количестве
+    """
+    executed_operations = [operation for operation in data if operation.get('state') == 'EXECUTED']
     return executed_operations[len(executed_operations) - operations_amount:]
 
 
-def sender_format(account):
-    account = ''.join([i for i in account.split() if i.isdigit()])
-    res = ''
-    format_str = account[:6] + '*' * (len(account) - 10) + account[-4:]
+def sender_format(sender_account):
+    """
+    функция форматирует отображение счета отправителя согласно ТЗ
+    :param sender_account: получаем данные по счету отправителя
+    :return: возвращаем отформатированную строку
+    """
+    sender_account = ''.join([i for i in sender_account.split() if i.isdigit()])
+    formatted_sender_account = ''
+    format_str = sender_account[:6] + '*' * (len(sender_account) - 10) + sender_account[-4:]
     for i in range(0, len(format_str), 4):
-        res += format_str[i:i + 4] + ' '
-    if res == '':
+        formatted_sender_account += format_str[i:i + 4] + ' '
+    if formatted_sender_account == '':
         return f'Счет отправителя неизвестен'
-    return res
+    return formatted_sender_account
 
 
-def receiver_format(account):
-    return f"{' '.join([i for i in account.split() if i.isalpha()])} **{account[-4:]}"
+def receiver_format(receiver_account):
+    """
+    функция форматирует отображение счета получателя согласно ТЗ
+    :param receiver_account: олучаем данные по счету получателя
+    :return: возвращаем отформатированную строку
+    """
+    return f"{' '.join([i for i in receiver_account.split() if i.isalpha()])} **{receiver_account[-4:]}"
