@@ -15,10 +15,7 @@ def date_format(date_log):
 
 
 def if_executed(data, operations_amount):
-    executed_operations = []
-    for i in data:
-        if i.get('state') == 'EXECUTED':
-            executed_operations.append(i)
+    executed_operations = [i for i in data if i.get('state') == 'EXECUTED']
     return executed_operations[len(executed_operations) - operations_amount:]
 
 
