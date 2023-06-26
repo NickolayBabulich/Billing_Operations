@@ -2,7 +2,7 @@ from utils import load_data, if_executed, sender_format, date_format, receiver_f
 
 FILENAME = 'operations.json'
 data = load_data(FILENAME)
-last_executed_operations = if_executed(data)
+last_executed_operations = if_executed(data, 15)
 
 new = sorted(last_executed_operations, key=lambda x: x.get('date'), reverse=True)
 
