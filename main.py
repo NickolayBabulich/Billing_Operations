@@ -6,9 +6,7 @@ data = load_data(FILENAME)
 
 last_executed_operations = if_executed(data, 5)
 
-sorted_operations = sorted(last_executed_operations, key=lambda x: x.get('date'), reverse=True)
-
-for operation in sorted_operations:
+for operation in last_executed_operations:
     date = date_format(operation.get('date'))
     description = operation.get('description')
     sender = sender_format(operation.get('from', 'Empty account'))
