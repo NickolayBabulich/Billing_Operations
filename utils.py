@@ -29,10 +29,11 @@ def if_executed(data, operations_amount):
     функция выводит лог успешных операций
     :param data: данные операций
     :param operations_amount: параметр задает необходимое количество операций для отображения
-    :return: возвращает список только успешных операций от самой последней в заданном количестве
+    :return: возвращает список только успешных и отсортированных операций от самой последней в заданном количестве
     """
     executed_operations = [operation for operation in data if operation.get('state') == 'EXECUTED']
-    return executed_operations[len(executed_operations) - operations_amount:]
+    sorted_last_operations = sorted(executed_operations, key=lambda x: x.get('date'), reverse=True)
+    return sorted_last_operations[:operations_amount]
 
 
 def sender_format(sender_account):
@@ -41,14 +42,15 @@ def sender_format(sender_account):
     :param sender_account: получаем данные по счету отправителя
     :return: возвращаем отформатированную строку
     """
-    sender_account = ''.join([i for i in sender_account.split() if i.isdigit()])
+    account = ''.join([i for i in sender_account.split() if i.isdigit()])
+    card_name = ' '.join([i for i in sender_account.split() if i.isalpha()])
     formatted_sender_account = ''
-    format_str = sender_account[:6] + '*' * (len(sender_account) - 10) + sender_account[-4:]
+    format_str = account[:6] + '*' * (len(account) - 10) + account[-4:]
     for i in range(0, len(format_str), 4):
         formatted_sender_account += format_str[i:i + 4] + ' '
     if formatted_sender_account == '':
         return f'Счет отправителя неизвестен'
-    return formatted_sender_account
+    return f'{card_name} {formatted_sender_account}'
 
 
 def receiver_format(receiver_account):
