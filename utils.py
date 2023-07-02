@@ -50,7 +50,7 @@ def sender_format(sender_account):
         formatted_sender_account += format_str[i:i + 4] + ' '
     if formatted_sender_account == '':
         return f'Счет отправителя неизвестен'
-    return f'{card_name} {formatted_sender_account}'
+    return f'{card_name} {formatted_sender_account.strip()}'
 
 
 def receiver_format(receiver_account):
